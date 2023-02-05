@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+    
+{% block content %}
+    {% if current_user.is_anonymous %}
+    <h1> Welcome to Terminal News!</h1>
+    {% else %}
+    <h1> Hello, {{ current_user.username }}!</h1>
+    {% endif %}
+    {% for article in articles %}
+    <div><p>{{ article.author.username }} says: <b>{{ article.body }}</b></p></div>
+    {% endfor %}
+{% endblock %}
