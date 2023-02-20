@@ -10,33 +10,31 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 class UserRegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')]
-    )
-
-    is_player = BooleanField('Will you be playing a Character?')
-
-    name = StringField('Character Name', validators=[DataRequired()])   
-
-    submit = SubmitField('Register User')
-
+    
     def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
+        user = User.query.filter_by(username=username.data).one_or_none()
         if user is not None:
             raise ValidationError('Please use a different username.')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
+        user = User.query.filter_by(email=email.data).one_or_none()
         if user is not None:
             raise ValidationError('Please use a different email address.')
 
-    def validate_char_name(self, name):
-        char_name = Character.query.filter_by(name=name.data).first()
-        if char_name is not None:
+    def validate_character(self, name):
+        char = Character.query.filter_by(name=name.data).one_or_none()
+        if char is not None:
             raise ValidationError('Please use a different character name.')
+        
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    name = StringField('Character Name', validators=[DataRequired(), validate_character])   
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+
+    submit = SubmitField('Register User')
+
+
 
 class EditProfileForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

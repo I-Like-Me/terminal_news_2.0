@@ -582,3 +582,5 @@ venv/lib/python3.8/site-packages/setuptools-49.2.1.dist-info/top_level.txt
 venv/lib/python3.8/site-packages/setuptools-49.2.1.dist-info/WHEEL
 venv/lib/python3.8/site-packages/setuptools-49.2.1.dist-info/zip-safe
 .DS_Store
+logs/terminal_news.log.5
+logs/terminal_news.log.6

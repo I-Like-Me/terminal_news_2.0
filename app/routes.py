@@ -80,22 +80,15 @@ def register_user():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = UserRegistrationForm()
-    if form.validate_on_submit() and form.is_player.data:
+    if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)    
+        user.set_password(form.password.data)
         db.session.add(user)
         char = Character(name=form.name.data, player=user)
         db.session.add(char)
         db.session.commit()
-        flash('Congratulations, you are now a registered user and character!')
-        return redirect(url_for('login'))
-    if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)    
-        db.session.add(user)
-        db.session.commit()
-        flash('Congratulations, you are now a registered user!')
-        return redirect(url_for('login'))        
+        flash('Congratulations, you are now a registered.')
+        return redirect(url_for('login'))       
     return render_template('register_user.html', title='User Registration', form=form)
 
 from app.forms import EditProfileForm
