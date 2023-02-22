@@ -584,3 +584,5 @@ venv/lib/python3.8/site-packages/setuptools-49.2.1.dist-info/zip-safe
 .DS_Store
 logs/terminal_news.log.5
 logs/terminal_news.log.6
+migrations/versions/726fbdedd76a_teammates.py
+migrations/versions/__pycache__/726fbdedd76a_teammates.cpython-311.pyc

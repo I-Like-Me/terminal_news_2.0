@@ -18,6 +18,14 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
+        <p>
+            {{ form.char_level.label }}<br>
+            {{ form.char_level(cols=50, rows=4) }}<br>
+        </p>
+        <p>
+            {{ form.char_speed.label }}<br>
+            {{ form.char_speed(cols=50, rows=4) }}<br>
+        </p>
         <p>{{ form.submit() }}</p>
     </form>
 {% endblock %}

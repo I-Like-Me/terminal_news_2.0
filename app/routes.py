@@ -96,14 +96,23 @@ from app.forms import EditProfileForm
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    form = EditProfileForm(current_user.username)
+    form = EditProfileForm(
+        current_user.username,
+        current_user.my_character().name,
+        current_user.my_character().level,
+        current_user.my_character().speed,
+        )
     if form.validate_on_submit():
         current_user.username = form.username.data
-        current_user.char_name = form.char_name.data
+        current_user.my_character().name = form.char_name.data
+        current_user.my_character().level = form.char_level.data
+        current_user.my_character().speed = form.char_speed.data
         db.session.commit()
         flash('Your changes have been saved.')
         return redirect(url_for('edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
-        form.char_name.data = current_user.char_name
+        form.char_name.data = current_user.my_character().name
+        form.char_level.data = current_user.my_character().level
+        form.char_speed.data = current_user.my_character().speed
     return render_template('edit_profile.html', title='Edit Profile', form=form)

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from app.models import User, Character
 
@@ -37,16 +37,34 @@ class UserRegistrationForm(FlaskForm):
 
 
 class EditProfileForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    char_name = TextAreaField('Character Name', validators=[Length(min=0, max=140)])
-    submit = SubmitField('Submit')
 
-    def __init__(self, original_username, *args, **kwargs):
+    def __init__(
+        self, original_username,
+        original_char_name,
+        original_char_level,
+        original_char_speed, 
+        *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
         self.original_username = original_username
+        self.original_char_name = original_char_name
+        self.original_char_level = original_char_level
+        self.original_char_speed = original_char_speed
     
     def validate_username(self, username):
         if username.data != self.original_username:
             user = User.query.filter_by(username=self.username.data).first()
             if user is not None:
-                raise ValidationError('Please use a different username.')
+                raise ValidationError('Please use a different username.')   
+   
+    def validate_char_name(self, char_name):
+        if char_name.data != self.original_char_name:
+            char = Character.query.filter_by(name=self.char_name.data).first()
+            if char is not None:
+                raise ValidationError('Please use a different character name.')   
+
+    username = StringField('Username', validators=[DataRequired()])
+    char_name = StringField('Character Name', validators=[DataRequired()])
+    char_level = IntegerField('Character level')
+    char_speed = IntegerField('Character speed')
+    submit = SubmitField('Submit')
+
