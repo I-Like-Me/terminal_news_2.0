@@ -586,3 +586,4 @@ logs/terminal_news.log.5
 logs/terminal_news.log.6
 migrations/versions/726fbdedd76a_teammates.py
 migrations/versions/__pycache__/726fbdedd76a_teammates.cpython-311.pyc
+logs/terminal_news.log.7

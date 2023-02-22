@@ -48,17 +48,17 @@ class User(UserMixin, db.Model):
 
     def leave_team(self, user):
         if self.in_team_with(user):
-            breakpoint()
             self.team.remove(user)
     
     def in_team_with(self, user):
         return self.team.filter(teammates.c.teammate_id == user.id).count() > 0
 
-    def teammate_character(self):
-        return Character.query.join(
+    def team_characters(self):
+        team_members = Character.query.join(
             teammates, (teammates.c.teammate_id == Character.user_id)).filter(
-                teammates.c.team_member_id == self.id).order_by(
-                    Character.name.desc())
+                teammates.c.team_member_id == self.id)
+        my_char = Character.query.filter_by(user_id=self.id)
+        return team_members.union(my_char).order_by(Character.name.desc())
 
 inv_weapons = db.Table('inv_weapons',
     db.Column('w_owner_id', db.Integer, db.ForeignKey('character.id')),
