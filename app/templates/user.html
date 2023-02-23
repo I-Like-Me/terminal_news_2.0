@@ -21,12 +21,27 @@ tfoot {
                         <h1>User: {{ user.username }}</h1>
                         {% if user == current_user %}
                         <p><a href="{{ url_for('edit_profile') }}">Edit you profile</a></p>
-                        {% endif %}        
+                        {% elif not current_user.in_team_with(user) %}
+                        <p>
+                            <form action="{{ url_for('join_user', username=user.username) }}" method="post">
+                                {{ form.hidden_tag() }}
+                                {{ form.submit(value='Request Team Up')}}
+                            </form>
+                        </p>
+                        {% else %} 
+                        <p>
+                            <form action="{{ url_for('leave_user', username=user.username) }}" method="post">
+                                {{ form.hidden_tag() }}
+                                {{ form.submit(value='Leave Team')}}
+                            </form>
+                        </p>
+                        {% endif %}                              
                 </th>
             </tr>
         </thread>
         <tbody>
             <tr valign="top">
+                {% if user == current_user %}
                 <td>
                     <h3>Team: </h3>
                     {% for member in my_team %}
@@ -35,6 +50,7 @@ tfoot {
                     </p>
                     {% endfor %}
                 </td>
+                {% endif %}
                 <td>
                     <p>Character Name: {{ user.my_character().name }}</p>
                     <p>Character Level: {{ user.my_character().level }}</p>

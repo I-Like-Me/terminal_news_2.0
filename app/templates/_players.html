@@ -2,7 +2,11 @@
     <tr valign="top">
         {% if char.player.username != current_user.username %}
         <td><img src="{{ char.player.avatar(36) }}"></td>
-        <td>{{ char.name }}</td>
+        <td>
+            <a href="{{ url_for('user', username=char.player.username)}}">
+                {{ char.name }}
+            </a>
+        </td>
         {% endif %}
     </tr>
 </table>

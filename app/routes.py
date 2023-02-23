@@ -12,6 +12,7 @@ from app.forms import UserRegistrationForm
 from datetime import datetime
 from app.forms import EditProfileForm
 from app.forms import ArticleForm
+from app.forms import EmptyForm
 
 
 @app.before_request
@@ -44,7 +45,8 @@ def knowledge():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     my_team = current_user.team_characters().all()
-    return render_template('user.html', user=user, my_team=my_team)
+    form = EmptyForm()
+    return render_template('user.html', user=user, my_team=my_team, form=form)
 
 @app.route('/login', methods={'GET', 'POST'})
 def login():
@@ -109,3 +111,42 @@ def edit_profile():
         form.char_level.data = current_user.my_character().level
         form.char_speed.data = current_user.my_character().speed
     return render_template('edit_profile.html', title='Edit Profile', form=form)
+
+@app.route('/join_user/<username>', methods=['POST'])
+@login_required
+def join_user(username):
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=username).first()
+        if user is None:
+            flash(f"User {username} not found.")
+            return redirect(url_for('index'))
+        if user == current_user:
+            flash(f"You cannot team up with yourself.")
+            return redirect(url_for('user', username=username))
+        current_user.join_team(user)
+        db.session.commit()
+        flash(f'You have requested to team up with {username}.')
+        return redirect(url_for('user', username=username))
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/leave_user/<username>', methods=['POST'])
+@login_required
+def leave_user(username):
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=username).first()
+        if user is None:
+            flash(f"User {username} not found.")
+            return redirect(url_for('index'))
+        if user == current_user:
+            flash(f"You cannot leave yourself behind.")
+            return redirect(url_for('user', username=username))
+        current_user.leave_team(user)
+        user.leave_team(current_user)
+        db.session.commit()
+        flash(f'You have left the team.')
+        return redirect(url_for('user', username=username))
+    else:
+        return redirect(url_for('index'))
