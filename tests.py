@@ -1,5 +1,5 @@
 import os
-os.environ['DATBASE_URL'] = 'sqlite://'
+os.environ['DATABASE_URL'] = 'sqlite://'
 
 import unittest
 from app import app, db

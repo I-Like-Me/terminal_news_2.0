@@ -587,3 +587,10 @@ logs/terminal_news.log.6
 migrations/versions/726fbdedd76a_teammates.py
 migrations/versions/__pycache__/726fbdedd76a_teammates.cpython-311.pyc
 logs/terminal_news.log.7
+migrations/versions/5fcf7d089dce_added_to_user.py
+migrations/versions/526059242832_database_was_erased_after_runnign_the_.py
+.gitignore
+.gitignore
+.gitignore
+migrations/versions/__pycache__/5fcf7d089dce_added_to_user.cpython-311.pyc
+migrations/versions/__pycache__/526059242832_database_was_erased_after_runnign_the_.cpython-311.pyc

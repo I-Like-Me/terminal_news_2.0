@@ -6,7 +6,32 @@
     {% else %}
     <h1> Hello, {{ current_user.username }}!</h1>
     {% endif %}
+    {% if current_user.gm_status == 1 %}
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.headline.label }}<br>
+            {{ form.headline(size=32) }}<br>
+            {% for error in form.headline.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.body.label }}<br>
+            {{ form.body(cols=32, rows=4) }}<br>
+            {% for error in form.body.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    {% endif %}
+
     {% for article in articles %}
-    <div><p>{{ article.author.username }} says: <b>{{ article.body }}</b></p></div>
+    <div>
+        <p><h3>{{ article.headline }}</h3></p>
+        <p>{{ article.body }}</p>
+        <p><i>by {{ article.author.username }}</i></p>
+    </div>
     {% endfor %}
 {% endblock %}

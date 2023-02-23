@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for
 from app import app
 from app.forms import LoginForm
 from flask_login import current_user, login_user
-from app.models import User, Character
+from app.models import User, Character, Article
 from flask_login import logout_user
 from flask_login import login_required
 from flask import request
@@ -11,6 +11,7 @@ from app import db
 from app.forms import UserRegistrationForm
 from datetime import datetime
 from app.forms import EditProfileForm
+from app.forms import ArticleForm
 
 
 @app.before_request
@@ -19,24 +20,18 @@ def before_request():
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
-    articles = [
-        {
-            'author': {'username': 'Merla'},
-            'body': "Performing at Mushi's Lounge tonight."
-        },
-        {
-            'author': {'username': 'Buzz'},
-            'body': "Steel Falcons take 4TH!!! Take that Hang Time Howlers."
-        },
-        {
-            'author': {'username': 'Varik'},
-            'body': "Evil should really be a spectrum."
-        }
-    ]
-    return render_template('index.html', title='Articles', articles=articles)
+    form = ArticleForm()
+    if form.validate_on_submit():
+        article = Article(headline=form.headline.data, body=form.body.data, author=current_user)
+        db.session.add(article)
+        db.session.commit()
+        flash('Your article is now live.')
+        return redirect(url_for('index'))
+    articles = Article.query.all()
+    return render_template('index.html', title='Articles', articles=articles, form=form)
 
 @app.route('/knowledge')
 @login_required 

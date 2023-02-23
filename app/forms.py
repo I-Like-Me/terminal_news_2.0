@@ -68,3 +68,7 @@ class EditProfileForm(FlaskForm):
     char_speed = IntegerField('Character speed')
     submit = SubmitField('Submit')
 
+class ArticleForm(FlaskForm):
+    headline = StringField('headline', validators=[DataRequired()])
+    body = TextAreaField('body', validators=[DataRequired(), Length(min=1, max=140)])
+    submit = SubmitField('Submit')

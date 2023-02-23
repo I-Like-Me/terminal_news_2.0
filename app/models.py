@@ -18,6 +18,7 @@ class User(UserMixin, db.Model):
     articles = db.relationship('Article', backref='author', lazy='dynamic')
     character = db.relationship('Character', back_populates='player')
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    gm_status = db.Column(db.Integer, default=0)
     team = db.relationship(
         'User', secondary=teammates,
         primaryjoin=(teammates.c.team_member_id == id),
@@ -30,6 +31,13 @@ class User(UserMixin, db.Model):
     
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
+
+    def set_gm_status(self, status):
+        self.gm_status = status
+    
+    def check_gm_status(self):
+        if self.gm_status == 1:
+            return True
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
