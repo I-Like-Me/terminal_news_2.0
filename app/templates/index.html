@@ -56,10 +56,7 @@
             </td>
             <td>
                 {% for char in chars %}
-                <div>
-                    <b>{{ char.name }} -</b>
-                    <p>Level: {{ char.level }}, Class: {{ char.class }}</p>
-                </div>
+                    {% include '_players.html' %}
                 {% endfor %}
             </td>
         </tr>

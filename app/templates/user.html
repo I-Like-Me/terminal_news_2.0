@@ -28,7 +28,12 @@ tfoot {
         <tbody>
             <tr valign="top">
                 <td>
-                    <p>First Column</p>
+                    <h3>Team: </h3>
+                    {% for member in my_team %}
+                    <p>
+                        {{ member.name }}
+                    </p>
+                    {% endfor %}
                 </td>
                 <td>
                     <p>Character Name: {{ user.my_character().name }}</p>

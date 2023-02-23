@@ -43,11 +43,8 @@ def knowledge():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    articles = [
-        {'author': user, 'headline': 'Test Headline 1.'},
-        {'author': user, 'headline': 'Test Headline 2.'}
-    ]
-    return render_template('user.html', user=user, articles=articles)
+    my_team = current_user.team_characters().all()
+    return render_template('user.html', user=user, my_team=my_team)
 
 @app.route('/login', methods={'GET', 'POST'})
 def login():
