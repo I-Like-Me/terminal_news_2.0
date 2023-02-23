@@ -31,7 +31,8 @@ def index():
         flash('Your article is now live.')
         return redirect(url_for('index'))
     articles = Article.query.all()
-    return render_template('index.html', title='Articles', articles=articles, form=form)
+    chars = Character.query.all()
+    return render_template('index.html', title='Articles', articles=articles, form=form, chars=chars)
 
 @app.route('/knowledge')
 @login_required 
