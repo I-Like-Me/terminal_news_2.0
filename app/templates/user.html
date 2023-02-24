@@ -41,16 +41,12 @@ tfoot {
         </thread>
         <tbody>
             <tr valign="top">
-                {% if user == current_user %}
                 <td>
                     <h3>Team: </h3>
                     {% for member in my_team %}
-                    <p>
-                        {{ member.name }}
-                    </p>
+                        {% include '_team.html' %}
                     {% endfor %}
-                </td>
-                {% endif %}
+                </td>                
                 <td>
                     <p>Character Name: {{ user.my_character().name }}</p>
                     <p>Character Level: {{ user.my_character().level }}</p>

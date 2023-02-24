@@ -67,6 +67,7 @@ class User(UserMixin, db.Model):
                 teammates.c.team_member_id == self.id)
         my_char = Character.query.filter_by(user_id=self.id)
         return team_members.union(my_char).order_by(Character.name.desc())
+        
 
 inv_weapons = db.Table('inv_weapons',
     db.Column('w_owner_id', db.Integer, db.ForeignKey('character.id')),
