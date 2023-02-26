@@ -60,6 +60,9 @@ class User(UserMixin, db.Model):
     
     def in_team_with(self, user):
         return self.team.filter(teammates.c.teammate_id == user.id).count() > 0
+    
+    def interested_players(self, user):
+        return self.team.filter(teammates.c.team_member_id == user.id).count() > 0
 
     def team_characters(self):
         team_members = Character.query.join(
@@ -67,7 +70,12 @@ class User(UserMixin, db.Model):
                 teammates.c.team_member_id == self.id)
         my_char = Character.query.filter_by(user_id=self.id)
         return team_members.union(my_char).order_by(Character.name.desc())
-        
+    
+    def waiting_response(self):
+        asks = Character.query.join(
+            teammates, (teammates.c.team_member_id == Character.user_id)).filter(
+                teammates.c.teammate_id == self.id)
+        return asks.order_by(Character.name.desc())
 
 inv_weapons = db.Table('inv_weapons',
     db.Column('w_owner_id', db.Integer, db.ForeignKey('character.id')),

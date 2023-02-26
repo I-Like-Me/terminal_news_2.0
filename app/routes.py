@@ -45,8 +45,9 @@ def knowledge():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     my_team = user.team_characters().all()
+    asks = user.waiting_response().all()
     form = EmptyForm()
-    return render_template('user.html', user=user, my_team=my_team, form=form)
+    return render_template('user.html', user=user, my_team=my_team, form=form, asks=asks)
 
 @app.route('/login', methods={'GET', 'POST'})
 def login():
