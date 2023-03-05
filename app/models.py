@@ -5,6 +5,11 @@ from flask_login import UserMixin
 from app import login
 from hashlib import md5
 
+games_and_players = db.Table('games_and_players',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('game_id', db.Integer, db.ForeignKey('game.id'))
+)
+
 teammates = db.Table('teammates',
     db.Column('team_member_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('teammate_id', db.Integer, db.ForeignKey('user.id'))
@@ -19,6 +24,11 @@ class User(UserMixin, db.Model):
     character = db.relationship('Character', back_populates='player')
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     gm_status = db.Column(db.Integer, default=0)
+    games = db.relationship(
+        'User', secondary=games_and_players,
+        primaryjoin=(games_and_players.c.user_id == id),
+        backref=db.backref('games_and_players', lazy='dynamic')
+    )
     team = db.relationship(
         'User', secondary=teammates,
         primaryjoin=(teammates.c.team_member_id == id),
@@ -76,6 +86,20 @@ class User(UserMixin, db.Model):
             teammates, (teammates.c.team_member_id == Character.user_id)).filter(
                 teammates.c.teammate_id == self.id)
         return asks.order_by(Character.name.desc())
+
+class Game(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(140), index=True, unique=True)
+    player_cap = db.Column(db.Integer)
+    players = db.relationship(
+        'Game', secondary=games_and_players,
+        secondaryjoin=(games_and_players.c.game_id == id),
+        backref=db.backref('games_and_players', lazy='dynamic')
+    )
+    
+    def __repr__(self):
+        return f'<Game {self.name}>'
+
 
 inv_weapons = db.Table('inv_weapons',
     db.Column('w_owner_id', db.Integer, db.ForeignKey('character.id')),

@@ -594,3 +594,13 @@ migrations/versions/526059242832_database_was_erased_after_runnign_the_.py
 .gitignore
 migrations/versions/__pycache__/5fcf7d089dce_added_to_user.cpython-311.pyc
 migrations/versions/__pycache__/526059242832_database_was_erased_after_runnign_the_.cpython-311.pyc
+migrations/versions/9a054fc34b5c_restore.py
+migrations/versions/__pycache__/9a054fc34b5c_restore.cpython-311.pyc
+migrations/versions/__pycache__/8d3766f3929c_system_added.cpython-311.pyc
+.gitignore
+migrations/versions/__pycache__/8452d36422dc_system_added.cpython-311.pyc
+migrations/versions/__pycache__/acac50e0a2cf_games_and_association_list_added.cpython-311.pyc
+migrations/versions/__pycache__/dc4b9dbd0b29_system_added.cpython-311.pyc
+migrations/versions/__pycache__/f5d4ca55df7f_added_player_cap_to_game_table.cpython-311.pyc
+migrations/versions/acac50e0a2cf_games_and_association_list_added.py
+migrations/versions/f5d4ca55df7f_added_player_cap_to_game_table.py
