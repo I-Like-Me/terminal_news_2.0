@@ -24,6 +24,7 @@ class User(UserMixin, db.Model):
     character = db.relationship('Character', back_populates='player')
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     gm_status = db.Column(db.Integer, default=0)
+    owned_game = db.relationship('Game', back_populates='game_master')
     games = db.relationship(
         'User', secondary=games_and_players,
         primaryjoin=(games_and_players.c.user_id == id),
@@ -47,6 +48,14 @@ class User(UserMixin, db.Model):
     
     def check_gm_status(self):
         if self.gm_status == 1:
+            return True
+    
+    def active_game(self):
+        if len(self.owned_game) == 0:
+            return False
+
+    def can_make_game(self):
+        if self.check_gm_status == True and self.active_game == False:
             return True
 
     def check_password(self, password):
@@ -91,6 +100,8 @@ class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(140), index=True, unique=True)
     player_cap = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    game_master = db.relationship('User', back_populates='owned_game')
     players = db.relationship(
         'Game', secondary=games_and_players,
         secondaryjoin=(games_and_players.c.game_id == id),

@@ -604,3 +604,5 @@ migrations/versions/__pycache__/dc4b9dbd0b29_system_added.cpython-311.pyc
 migrations/versions/__pycache__/f5d4ca55df7f_added_player_cap_to_game_table.cpython-311.pyc
 migrations/versions/acac50e0a2cf_games_and_association_list_added.py
 migrations/versions/f5d4ca55df7f_added_player_cap_to_game_table.py
+migrations/versions/28863a3a6831_added_foreign_key_to_game_table.py
+migrations/versions/__pycache__/28863a3a6831_added_foreign_key_to_game_table.cpython-311.pyc
