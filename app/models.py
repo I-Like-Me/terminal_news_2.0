@@ -102,6 +102,7 @@ class Game(db.Model):
     player_cap = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     game_master = db.relationship('User', back_populates='owned_game')
+    system_id = db.Column(db.Integer, db.ForeignKey('system.id'))
     players = db.relationship(
         'Game', secondary=games_and_players,
         secondaryjoin=(games_and_players.c.game_id == id),
@@ -111,6 +112,13 @@ class Game(db.Model):
     def __repr__(self):
         return f'<Game {self.name}>'
 
+class System(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(140), index=True, unique=True)
+    games = db.relationship('Game', backref='game_name', lazy='dynamic')
+
+    def __repr__(self):
+        return f'<System {self.name}>'
 
 inv_weapons = db.Table('inv_weapons',
     db.Column('w_owner_id', db.Integer, db.ForeignKey('character.id')),
